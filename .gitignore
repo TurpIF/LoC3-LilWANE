@@ -1,0 +1,5 @@
+/bin
+/target
+/src/main/resources/META-INF
+/.classpath
+/.settings
