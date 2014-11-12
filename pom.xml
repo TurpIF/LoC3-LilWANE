@@ -5,7 +5,7 @@
 
 	<groupId>com.d2si.loc</groupId>
 	<artifactId>bot-java-team</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 
 	<name>Bot in Java</name>
 	<description>Bot written in Java by team</description>
@@ -14,7 +14,7 @@
 		<repository>
 			<id>loc-repo</id>
 			<name>loc-repo</name>
-			<url>http://loc-build.loc.d2si:8083/nexus/content/repositories/thirdparty</url>
+			<url>http://nexus.loc.d2si/content/repositories/releases</url>
 		</repository>
 	</repositories>
 
@@ -91,12 +91,12 @@
 		<dependency>
 			<groupId>com.d2si.loc</groupId>
 			<artifactId>loc-protocol</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<version>1.0.0</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.d2si.loc</groupId>
-			<artifactId>loc-api-java-v2</artifactId>
+			<artifactId>loc-api-java-v1</artifactId>
 			<version>1.0.0</version>
 		</dependency>
 	</dependencies>
