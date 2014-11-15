@@ -27,13 +27,13 @@ public class Main implements Bot {
     @Override
     public void onTroopError(int turnNumber, String messageError, Troop troopInError) {
         // A previously troop sent was illegal...
-        log.info("onTroopError", "turnNumber[" + turnNumber + "] msg[" + messageError + "] troop:" + troopInError);
+        log.info("onTroopError" + "turnNumber[" + turnNumber + "] msg[" + messageError + "] troop:" + troopInError);
     }
 
     @Override
     public void onGameEnded(boolean areYouWinner, Board board) {
         // Am I winner?
-        log.info("onGameEnded", "winner[" + areYouWinner + "]");
+        log.info("onGameEnded" + "winner[" + areYouWinner + "]");
     }
 
     @Override

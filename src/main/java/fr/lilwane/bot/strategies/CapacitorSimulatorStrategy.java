@@ -3,7 +3,9 @@ package fr.lilwane.bot.strategies;
 import com.d2si.loc.api.datas.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -15,7 +17,7 @@ public class CapacitorSimulatorStrategy implements BotStrategy {
      * Fraction of the budget (troops newly created) allocated to expansion.
      * A higher value means more defensive, a lower means more offensive.
      */
-    public static final int EXPANSION_BUDGET = 3;
+    public static final double EXPANSION_BUDGET = 1.0;
 
     /**
      * Since the game's objective is mainly to have castles, tilt the bot in favor of conquering new castles.
@@ -28,6 +30,22 @@ public class CapacitorSimulatorStrategy implements BotStrategy {
      * TODO this should be app-global
      */
     public static final double UNIT_SPEED = 5.0;
+
+    // Decide what troops to send on this new turn
+    private List<Troop> troopsToSendOnThisTurn = new ArrayList<>();
+
+    private Map<Troop, Castle> troopDestinations = new HashMap<>();
+
+    private void init() {
+        troopsToSendOnThisTurn.clear();
+        troopDestinations.clear();
+    }
+
+    private void sendTroops(Castle from, Castle to, int nbUnitsToSend) {
+        Troop troop = new Troop(to, from, nbUnitsToSend);
+        troopsToSendOnThisTurn.add(troop);
+        troopDestinations.put(troop, to);
+    }
 
     /**
      * Computes the time estimated to move a new troop from castle "origin" to castle "other".
@@ -45,16 +63,23 @@ public class CapacitorSimulatorStrategy implements BotStrategy {
         return dist / UNIT_SPEED;
     }
 
+    private Castle getTroopDestination(Troop troop) {
+        if (troopDestinations.containsKey(troop)) {
+            return troopDestinations.get(troop);
+        }
+        return troop.getDestination();
+    }
+
     private Integer troopsToSend(Castle origin, Castle other, Board board) {
         int  n = other.getUnitCount() + 1;
 
         // On prend en compte la croissance
-        // n += other.getGrowthRate() * (int) Math.floor(timeToGo(origin, other));
+        n += other.getGrowthRate() * ((int) Math.ceil(timeToGo(origin, other)) + 1);
 
         // On enlève nos troupes en déplacement
         n -= board.getMineTroops()
                 .stream()
-                .filter(t -> t.getDestination().equals(other))
+                .filter(t -> getTroopDestination(t).equals(other))
                 .mapToInt(Troop::getUnitCount)
                 .sum();
 
@@ -103,39 +128,37 @@ public class CapacitorSimulatorStrategy implements BotStrategy {
 
     @Override
     public List<Troop> createNewTroops(Board board) {
-        // Decide what troops to send on this new turn
-        List<Troop> troopsToSendOnThisTurn = new ArrayList<>();
+        init();
 
         // Send units on each castles I own
         List<Castle> myCastles = board.getMineCastles();
         for (Castle castle : myCastles) {
-
             // Get all "enemy" castles (opponent or neutral)
             List<Castle> allCastles = board.getCastles()
                     .stream()
                     .filter(c -> !c.equals(castle) && (c.getOwner() != Owner.Mine))
                     .collect(Collectors.toList());
 
-            Coordinate castlePos = castle.getPosition();
-            allCastles.sort((a, b) -> {
-                return costCastle(castle, b).compareTo(costCastle(castle, a));
-            });
+            allCastles.sort((a, b) -> costCastle(castle, b).compareTo(costCastle(castle, a)));
 
-            int nbSoldiers = castle.getUnitCount() / EXPANSION_BUDGET;
+            int nbSoldiers = (int) (castle.getUnitCount() / EXPANSION_BUDGET) - 1;
             for (Castle enemyCastle : allCastles) {
                 // Leave at least one soldier on the castle
                 if (nbSoldiers <= 1) {
                     break;
                 }
 
-                // Send the minumum amount of units (not all nbSoldiers though)
-                int nbUnitsToSend = Math.min(nbSoldiers - 1, troopsToSend(castle, enemyCastle, board));
+                // Send the minimum amount of units (not all nbSoldiers though)
+                int nbUnitsToSend = Math.min(nbSoldiers, troopsToSend(castle, enemyCastle, board));
                 if (nbUnitsToSend <= 0) {
                     continue;
                 }
-                Troop troop = new Troop(enemyCastle, castle, nbUnitsToSend);
+                if (nbUnitsToSend >= nbSoldiers) {
+                    continue;
+                }
+
                 nbSoldiers -= nbUnitsToSend;
-                troopsToSendOnThisTurn.add(troop);
+                sendTroops(castle, enemyCastle, nbUnitsToSend);
             }
         }
 
