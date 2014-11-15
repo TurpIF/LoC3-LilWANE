@@ -37,13 +37,31 @@ public class WinterCapacitorStrategy implements BotStrategy {
 
     private Map<Troop, Castle> troopDestinations = new HashMap<>();
 
-    private void init() {
+    private Map<Castle, Force> castleForces = new HashMap<>();
+
+    private void init(Board board) {
         troopsToSendOnThisTurn.clear();
         troopDestinations.clear();
+        castleForces.clear();
+
+        for (Castle c : board.getCastles()) {
+            castleForces.put(c, new Force(c));
+        }
     }
 
-    private void sendTroops(Castle from, Castle to, int nbUnitsToSend) {
-        Troop troop = new Troop(to, from, nbUnitsToSend);
+    private void sendTroops(Castle from, Castle to, int forceToSend) {
+        Force force;
+        if (to.getOwner().equals(Owner.Mine)) {
+            force = Force.buildDefensive(from, forceToSend, 0.0, 0.0, 1.0);
+        }
+        else {
+            force = Force.buildAggressive(from, forceToSend, 1.0, 0.0, 0.0);
+        }
+        castleForces.get(from).remove(force);
+        Troop troop = new Troop(to, from,
+                force.getAggressiveUnitCount(),
+                force.getDefensiveUnitCount(),
+                force.getSimpleUnitCount());
         troopsToSendOnThisTurn.add(troop);
         troopDestinations.put(troop, to);
     }
@@ -72,23 +90,51 @@ public class WinterCapacitorStrategy implements BotStrategy {
     }
 
     private Integer troopForceToSend(Castle origin, Castle other, Board board) {
-        int  n = other.getAggressiveUnitCount() + other.getDefensiveUnitCount() * 2 + other.getSimpleUnitCount() + 1;
+        Force force = new Force(other);
 
         // On prend en compte la croissance
-        n += other.getGrowthRate() * ((int) Math.ceil(timeToGo(origin, other)) + 1);
+        int n = other.getGrowthRate() * ((int) Math.ceil(timeToGo(origin, other)) + 1);
+        if (other.getUnitType().equals(UnitType.Simple)) {
+            force.addSimpleUnits(n);
+        }
+        if (other.getUnitType().equals(UnitType.Agressive)) {
+            force.addAggressiveUnits(n);
+        }
+        if (other.getUnitType().equals(UnitType.Defensive)) {
+            force.addDefensiveUnits(n);
+        }
+
+        int forceCount;
+        if (other.getOwner().equals(Owner.Mine)) {
+            forceCount = force.getDefensiveForce();
+        }
+        else {
+            forceCount = force.getAggressiveForce();
+        }
+
 
         // On enlève nos troupes en déplacement
-        n -= board.getMineTroops()
+        forceCount -= board.getMineTroops()
                 .stream()
                 .filter(t -> getTroopDestination(t).equals(other))
-                .mapToInt(t -> t.getAggressiveUnitCount() * 2 + t.getDeffensiveUnitCount() + t.getSimpleUnitCount())
+                .mapToInt(t -> {
+                    if (other.getOwner().equals(Owner.Mine)) {
+                        return new Force(t).getDefensiveUnitCount();
+                    }
+                    return new Force(t).getAggressiveUnitCount();
+                })
                 .sum();
 
         // On ajoute les troupes ennemies en déplacement
-        n += board.getOpponentsTroops()
+        forceCount += board.getOpponentsTroops()
                 .stream()
                 .filter(t -> t.getDestination().equals(other))
-                .mapToInt(t -> t.getAggressiveUnitCount() + t.getDeffensiveUnitCount() * 2 + t.getSimpleUnitCount())
+                .mapToInt(t -> {
+                    if (!other.getOwner().equals(Owner.Mine)) {
+                        return new Force(t).getDefensiveUnitCount();
+                    }
+                    return new Force(t).getAggressiveUnitCount();
+                })
                 .sum();
 
         return n;
@@ -142,25 +188,23 @@ public class WinterCapacitorStrategy implements BotStrategy {
 
             allCastles.sort((a, b) -> costCastle(castle, b).compareTo(costCastle(castle, a)));
 
-            int nbAggressiveUnits = (int) (castle.getAggressiveUnitCount() / EXPANSION_BUDGET);
-            int nbDefensiveUnits = (int) (castle.getDefensiveUnitCount() / EXPANSION_BUDGET);
-            int nbSimpleUnits = (int) (castle.getDefensiveUnitCount() / EXPANSION_BUDGET);
+            Force force = castleForces.get(castle);
             for (Castle enemyCastle : allCastles) {
                 // Leave at least one soldier on the castle
-                if (nbAggressiveUnits + nbDefensiveUnits + nbSimpleUnits <= 1) {
+                if (force.getTotalUnits() <= 1) {
                     break;
                 }
 
                 // Send the minimum amount of units (not all nbSoldiers though)
-                int nbTroopForcesToSend = Math.min(nbSoldiers, troopForceToSend(castle, enemyCastle, board));
+                int nbTroopForcesToSend = Math.min(force.getAggressiveForce(),
+                        troopForceToSend(castle, enemyCastle, board));
                 if (nbTroopForcesToSend <= 0) {
                     continue;
                 }
-                if (nbTroopForcesToSend >= nbSoldiers) {
+                if (nbTroopForcesToSend >= force.getAggressiveForce()) {
                     continue;
                 }
 
-                nbSoldiers -= nbTroopForcesToSend;
                 sendTroops(castle, enemyCastle, nbTroopForcesToSend);
             }
         }

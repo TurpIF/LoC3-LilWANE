@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d18d2970-a48d-4267-b637-d22a94fc4bbf" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/lilwane/bot/strategies/WinterCapacitorStrategy.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_d2si_loc_loc_api_java_v2_1_0_0.xml" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/fr/lilwane/bot/strategies/CapacitorSimulatorStrategy.java" afterPath="$PROJECT_DIR$/src/main/java/fr/lilwane/bot/strategies/CapacitorSimulatorStrategy.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/fr/lilwane/bot/Main.java" afterPath="$PROJECT_DIR$/src/main/java/fr/lilwane/bot/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bot-java-team.iml" afterPath="$PROJECT_DIR$/bot-java-team.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/fr/lilwane/bot/strategies/WinterCapacitorStrategy.java" afterPath="$PROJECT_DIR$/src/main/java/fr/lilwane/bot/strategies/WinterCapacitorStrategy.java" />
     </list>
     <ignored path="team-12-java.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -96,8 +90,8 @@
       <file leaf-file-name="WinterCapacitorStrategy.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/fr/lilwane/bot/strategies/WinterCapacitorStrategy.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6876356" vertical-offset="2491" max-vertical-offset="3060">
-              <caret line="162" column="50" selection-start-line="162" selection-start-column="50" selection-end-line="162" selection-end-column="50" />
+            <state vertical-scroll-proportion="0.4924078" vertical-offset="2581" max-vertical-offset="3852">
+              <caret line="162" column="38" selection-start-line="162" selection-start-column="38" selection-end-line="162" selection-end-column="38" />
               <folding />
             </state>
           </provider>
@@ -821,8 +815,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/fr/lilwane/bot/strategies/WinterCapacitorStrategy.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6876356" vertical-offset="2491" max-vertical-offset="3060">
-          <caret line="162" column="50" selection-start-line="162" selection-start-column="50" selection-end-line="162" selection-end-column="50" />
+        <state vertical-scroll-proportion="0.4924078" vertical-offset="2581" max-vertical-offset="3852">
+          <caret line="162" column="38" selection-start-line="162" selection-start-column="38" selection-end-line="162" selection-end-column="38" />
           <folding />
         </state>
       </provider>
