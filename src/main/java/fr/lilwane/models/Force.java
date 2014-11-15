@@ -5,6 +5,10 @@ import com.d2si.loc.api.datas.Troop;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class Force {
     // Main logger
     private static final Logger log = LogManager.getLogger(Force.class);
@@ -43,11 +47,20 @@ public class Force {
                 f.simpleUnitCount);
     }
 
-    public static Force createAggressiveForce(Force force, int minimalForce, double aggressiveRatio, double defensiveRatio, double simpleRatio) {
-        double totalRatios = aggressiveRatio + defensiveRatio + simpleRatio;
-        aggressiveRatio /= totalRatios;
-        defensiveRatio /= totalRatios;
-        simpleRatio /= totalRatios;
+    /**
+     * Create a distributed force taking a source force and a minimal force wanted among this one (provided that it
+     * can create this one). Distribute the aggressive, defensive and neutral forces given the distribution triplet,
+     * and multiply each component accordingly to the weight triplet.
+     *
+     * @param force the source force to take from
+     * @param minimalForce the minimum desired force
+     * @param distributions
+     * @param weights
+     * @return
+     */
+    private static Force createDistributedForce(Force force, int minimalForce, List<Double> distributions, List<Double> weights) {
+        double totalDistributions = distributions.stream().mapToDouble((x) -> x).sum();
+        distributions = distributions.stream().map((x) -> x / totalDistributions).collect(Collectors.toList());
 
         double currentForce = 0;
         int nbAgg = 0;
@@ -55,18 +68,26 @@ public class Force {
         int nbSim = 0;
         while (currentForce < minimalForce) {
             double c = currentForce;
+
+            // Add aggressive units if available
             if (nbAgg < force.getAggressiveUnitCount()) {
-                currentForce += aggressiveRatio * 2;
+                currentForce += distributions.get(0) * weights.get(0);
                 nbAgg++;
             }
+
+            // Add defensive units if available
             if (nbDef < force.getDefensiveUnitCount()) {
-                currentForce += defensiveRatio;
+                currentForce += distributions.get(1) * weights.get(1);
                 nbDef++;
             }
+
+            // Add simple units if available
             if (nbSim < force.getSimpleUnitCount()) {
-                currentForce += simpleRatio;
+                currentForce += distributions.get(2) * weights.get(2);
                 nbSim++;
             }
+
+            // Break if no changes
             if (c == currentForce) {
                 break;
             }
@@ -75,37 +96,57 @@ public class Force {
         return new Force(nbAgg, nbDef, nbSim);
     }
 
-    public static Force createDefensiveForce(Force force, int minimalForce, double aggressiveRatio, double defensiveRatio, double simpleRatio) {
-        double totalRatios = aggressiveRatio + defensiveRatio + simpleRatio;
-        aggressiveRatio /= totalRatios;
-        defensiveRatio /= totalRatios;
-        simpleRatio /= totalRatios;
-
-        double currentForce = 0;
-        int nbAgg = 0;
-        int nbDef = 0;
-        int nbSim = 0;
-        while (currentForce < minimalForce) {
-            double c = currentForce;
-
-            if (nbAgg < force.getAggressiveUnitCount()) {
-                currentForce += aggressiveRatio;
-                nbAgg++;
-            }
-            if (nbDef < force.getDefensiveUnitCount()) {
-                currentForce += defensiveRatio * 2;
-                nbDef++;
-            }
-            if (nbSim < force.getSimpleUnitCount()) {
-                currentForce += simpleRatio;
-                nbSim++;
-            }
-            if (c == currentForce) {
-                break;
-            }
+    /**
+     * Create a distributed force taking a source force and a minimal force wanted among this one (provided that it
+     * can create this one). Distribute the aggressive, defensive and neutral forces given the distribution triplet,
+     * and multiply each component accordingly to the weight triplet.
+     *
+     * @param force the source force to take from
+     * @param minimalForce the minimum desired force
+     * @param distributions
+     * @param weights
+     * @return
+     */
+    private static Force createDistributedForce(Force force, int minimalForce, double[] distributions, double[] weights) {
+        // Create distributions/weights triplet
+        List<Double> distributionLs = new ArrayList<Double>();
+        List<Double> weightLs = new ArrayList<Double>();
+        for (int i = 0; i < 3; i++) {
+            distributionLs.add(distributions[i]);
+            weightLs.add(weights[i]);
         }
 
-        return new Force(nbAgg, nbDef, nbSim);
+        return createDistributedForce(force, minimalForce, distributionLs, weightLs);
+    }
+
+    enum Mode {
+        DEFENSIVE,
+        OFFENSIVE,
+        BALANCED
+    }
+
+    private static Force createDistributedForce(Force force, int minimalForce, double aggressiveRatio, double defensiveRatio, double simpleRatio, Mode mode) {
+        double [] weights = null;
+        switch (mode) {
+            case OFFENSIVE:
+                weights = new double[]{2., 1., 1.};
+
+            case DEFENSIVE:
+                weights = new double[]{1., 2., 1.};
+
+            case BALANCED:
+                weights = new double[]{1., 1., 1.};
+        }
+        double [] distributions = {aggressiveRatio, defensiveRatio, simpleRatio};
+        return createDistributedForce(force, minimalForce, distributions, weights);
+    }
+
+    public static Force createAggressiveForce(Force force, int minimalForce, double aggressiveRatio, double defensiveRatio, double simpleRatio) {
+        return createDistributedForce(force, minimalForce, aggressiveRatio, defensiveRatio, simpleRatio, Mode.OFFENSIVE);
+    }
+
+    public static Force createDefensiveForce(Force force, int minimalForce, double aggressiveRatio, double defensiveRatio, double simpleRatio) {
+        return createDistributedForce(force, minimalForce, aggressiveRatio, defensiveRatio, simpleRatio, Mode.OFFENSIVE);
     }
 
     public int getAggressiveUnitCount() {
