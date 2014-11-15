@@ -138,7 +138,11 @@ public class WinterCapacitorStrategy implements BotStrategy {
         Force force = new Force(other);
 
         // On prend en compte la croissance
-        int n = other.getGrowthRate() * ((int) Math.ceil(timeToGo(origin, other)));
+        int n = 0;
+        if (!other.getOwner().equals(Owner.Neutral)) {
+            n = other.getGrowthRate() * ((int) Math.ceil(timeToGo(origin, other)) + 1);
+        }
+
         if (other.getUnitType().equals(UnitType.Simple)) {
             force.setSimpleUnitCount(force.getSimpleUnitCount() + n);
         }
