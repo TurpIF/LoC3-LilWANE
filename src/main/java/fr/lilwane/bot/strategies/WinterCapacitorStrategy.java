@@ -212,6 +212,40 @@ public class WinterCapacitorStrategy implements BotStrategy {
             }
         }
 
+        // Attaque des Ewoks : réunir pour régner
+        // Send units on each castles I own
+        List<Castle> otherCastles = board.getNeutralCastles();
+        otherCastles.addAll(board.getOpponentsCastles());
+        otherCastles.sort((a, b) -> new Double(new Force(b).getDefensiveForce())
+                .compareTo((double) new Force(a).getDefensiveForce()));
+        for (Castle other : otherCastles) {
+            List<Castle> castles = board.getMineCastles()
+                    .stream()
+                    .filter(c -> castleForces.get(c).getTotalUnits() > 0)
+                    .sorted((a, b) -> timeToGo(other, b).compareTo(timeToGo(other, a)))
+                    .collect(Collectors.toList());
+            int forceDef = new Force(other).getDefensiveForce();
+            int forceAtk = 0;
+            Map<Castle, Integer> potentials = new HashMap<>();
+
+            for (Castle mine : castles) {
+                if (forceDef < forceAtk) {
+                    break;
+                }
+                Integer f = Math.min(castleForces.get(mine).getAggressiveForce(), forceDef);
+                forceAtk += f;
+                potentials.put(mine, f);
+            }
+
+            // On envoie la sauce
+            if (forceDef < forceAtk) {
+                for (Map.Entry<Castle, Integer> entry : potentials.entrySet()) {
+                    sendTroops(entry.getKey(), other, entry.getValue());
+                }
+                break;
+            }
+        }
+
         return troopsToSendOnThisTurn;
     }
 }
