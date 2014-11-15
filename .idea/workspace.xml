@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d18d2970-a48d-4267-b637-d22a94fc4bbf" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/lilwane/bot/strategies/CapacitorSimulatorStrategy.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/loc-gui-1.0.0/logs/2014-11-15_11-30-43-gui.log" afterPath="$PROJECT_DIR$/loc-gui-1.0.0/logs/2014-11-15_11-30-43-gui.log" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/fr/lilwane/bot/Main.java" afterPath="$PROJECT_DIR$/src/main/java/fr/lilwane/bot/Main.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/fr/lilwane/bot/strategies/CapacitorSimulatorStrategy.java" afterPath="$PROJECT_DIR$/src/main/java/fr/lilwane/bot/strategies/CapacitorSimulatorStrategy.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="team-12-java.iws" />
@@ -85,8 +83,8 @@
       <file leaf-file-name="CapacitorSimulatorStrategy.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/fr/lilwane/bot/strategies/CapacitorSimulatorStrategy.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5466378" vertical-offset="594" max-vertical-offset="1422">
-              <caret line="51" column="23" selection-start-line="51" selection-start-column="23" selection-end-line="51" selection-end-column="23" />
+            <state vertical-scroll-proportion="0.35140997" vertical-offset="0" max-vertical-offset="1476">
+              <caret line="13" column="27" selection-start-line="13" selection-start-column="27" selection-end-line="13" selection-end-column="27" />
               <folding />
             </state>
           </provider>
@@ -796,8 +794,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/fr/lilwane/bot/strategies/CapacitorSimulatorStrategy.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5466378" vertical-offset="594" max-vertical-offset="1422">
-          <caret line="51" column="23" selection-start-line="51" selection-start-column="23" selection-end-line="51" selection-end-column="23" />
+        <state vertical-scroll-proportion="0.35140997" vertical-offset="0" max-vertical-offset="1476">
+          <caret line="13" column="27" selection-start-line="13" selection-start-column="27" selection-end-line="13" selection-end-column="27" />
           <folding />
         </state>
       </provider>

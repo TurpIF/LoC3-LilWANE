@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CapacitorSimulatorStrategy implements BotStrategy {
+    public static final int EXPANSION_BUDGET = 3;
+    public static final int NEW_CASTLE_GAIN = 100;
+
     private Double costCastle(Castle origin, Castle other) {
         final Integer K = 5; // On investit sur un chateau uniquement pour 5 tours
         final Double TAU = K / 5.0; // Constante de décharge d'une exp (cf Condensateur)
@@ -31,7 +34,7 @@ public class CapacitorSimulatorStrategy implements BotStrategy {
 
         if (!other.getOwner().equals(Owner.Mine)) {
             gain = (Math.exp((k + 1.0) / TAU) - 1.0) / (Math.exp(1.0 / TAU) - 1.0) * other.getGrowthRate();
-            gain += 10000;
+            gain += NEW_CASTLE_GAIN;
         }
 
         return (gain - loss) / (t + K);
@@ -49,7 +52,7 @@ public class CapacitorSimulatorStrategy implements BotStrategy {
             // Get all "enemy" castles (opponent or neutral)
             List<Castle> allCastles = board.getCastles()
                     .stream()
-                    .filter(c -> !c.equals(castle) && (c.getOwner() != Owner.Mine || true))
+                    .filter(c -> !c.equals(castle) && (c.getOwner() != Owner.Mine))
                     .collect(Collectors.toList());
 
             Coordinate castlePos = castle.getPosition();
@@ -57,7 +60,7 @@ public class CapacitorSimulatorStrategy implements BotStrategy {
                 return costCastle(castle, b).compareTo(costCastle(castle, a));
             });
 
-            int nbSoldiers = castle.getUnitCount() / 2;
+            int nbSoldiers = castle.getUnitCount() / EXPANSION_BUDGET;
             for (Castle enemyCastle : allCastles) {
                 // Leave at least one soldier on the castle
                 if (nbSoldiers <= 1) {
