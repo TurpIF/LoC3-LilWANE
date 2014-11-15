@@ -110,10 +110,10 @@ public class WinterCapacitorStrategy implements BotStrategy {
 
         int forceCount;
         if (other.getOwner().equals(Owner.Mine)) {
-            forceCount = force.getDefensiveUnitCount();
+            forceCount = force.getDefensiveForce();
         }
         else {
-            forceCount = force.getAggressiveUnitCount();
+            forceCount = force.getAggressiveForce();
         }
 
 
@@ -123,9 +123,9 @@ public class WinterCapacitorStrategy implements BotStrategy {
                 .filter(t -> getTroopDestination(t).equals(other))
                 .mapToInt(t -> {
                     if (other.getOwner().equals(Owner.Mine)) {
-                        return new Force(t).getDefensiveUnitCount();
+                        return new Force(t).getDefensiveForce();
                     }
-                    return new Force(t).getAggressiveUnitCount();
+                    return new Force(t).getAggressiveForce();
                 })
                 .sum();
 
@@ -135,13 +135,13 @@ public class WinterCapacitorStrategy implements BotStrategy {
                 .filter(t -> t.getDestination().equals(other))
                 .mapToInt(t -> {
                     if (!other.getOwner().equals(Owner.Mine)) {
-                        return new Force(t).getDefensiveUnitCount();
+                        return new Force(t).getDefensiveForce();
                     }
-                    return new Force(t).getAggressiveUnitCount();
+                    return new Force(t).getAggressiveForce();
                 })
                 .sum();
 
-        return n;
+        return forceCount;
     }
 
     /**
