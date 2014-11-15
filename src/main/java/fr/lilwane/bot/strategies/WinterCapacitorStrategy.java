@@ -1,6 +1,7 @@
 package fr.lilwane.bot.strategies;
 
 import com.d2si.loc.api.datas.*;
+import fr.lilwane.models.Force;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,10 +53,10 @@ public class WinterCapacitorStrategy implements BotStrategy {
     private void sendTroops(Castle from, Castle to, int forceToSend) {
         Force force;
         if (to.getOwner().equals(Owner.Mine)) {
-            force = Force.buildDefensive(from, forceToSend, 0.0, 0.0, 1.0);
+            force = Force.createDefensiveForce(new Force(from), forceToSend, 1.0, 1.0, 1.0);
         }
         else {
-            force = Force.buildAggressive(from, forceToSend, 1.0, 0.0, 0.0);
+            force = Force.createAggressiveForce(new Force(from), forceToSend, 1.0, 1.0, 1.0);
         }
         castleForces.get(from).remove(force);
         Troop troop = new Troop(to, from,
@@ -95,21 +96,21 @@ public class WinterCapacitorStrategy implements BotStrategy {
         // On prend en compte la croissance
         int n = other.getGrowthRate() * ((int) Math.ceil(timeToGo(origin, other)) + 1);
         if (other.getUnitType().equals(UnitType.Simple)) {
-            force.addSimpleUnits(n);
+            force.setSimpleUnitCount(force.getSimpleUnitCount() + n);
         }
         if (other.getUnitType().equals(UnitType.Agressive)) {
-            force.addAggressiveUnits(n);
+            force.setAggressiveUnitCount(force.getAggressiveUnitCount() + n);
         }
         if (other.getUnitType().equals(UnitType.Defensive)) {
-            force.addDefensiveUnits(n);
+            force.setDefensiveUnitCount(force.getDefensiveUnitCount() + n);
         }
 
         int forceCount;
         if (other.getOwner().equals(Owner.Mine)) {
-            forceCount = force.getDefensiveForce();
+            forceCount = force.getDefensiveUnitCount();
         }
         else {
-            forceCount = force.getAggressiveForce();
+            forceCount = force.getAggressiveUnitCount();
         }
 
 
@@ -161,12 +162,14 @@ public class WinterCapacitorStrategy implements BotStrategy {
         Double loss = 0.0;
 
         if (!other.getOwner().equals(Owner.Mine)) {
-            loss = (double) other.getUnitCount() + other.getGrowthRate() * t;
+            loss = (double) new Force(other).getDefensiveForce()
+                    + other.getGrowthRate() * t * (other.getUnitType().equals(UnitType.Defensive) ? 2 : 1);
         }
 
         if (!other.getOwner().equals(Owner.Mine)) {
             // Formule sum(e^(i/tau), i in [0..k])
-            gain = (Math.exp((k + 1.0) / TAU) - 1.0) / (Math.exp(1.0 / TAU) - 1.0) * other.getGrowthRate();
+            double gainUnit = (Math.exp((k + 1.0) / TAU) - 1.0) / (Math.exp(1.0 / TAU) - 1.0) * other.getGrowthRate();
+            gain += gainUnit * (other.getUnitType().equals(UnitType.Simple) ? 1 : 2);
             gain += NEW_CASTLE_GAIN;
         }
 
@@ -175,7 +178,7 @@ public class WinterCapacitorStrategy implements BotStrategy {
 
     @Override
     public List<Troop> createNewTroops(Board board) {
-        init();
+        init(board);
 
         // Send units on each castles I own
         List<Castle> myCastles = board.getMineCastles();
@@ -196,12 +199,12 @@ public class WinterCapacitorStrategy implements BotStrategy {
                 }
 
                 // Send the minimum amount of units (not all nbSoldiers though)
-                int nbTroopForcesToSend = Math.min(force.getAggressiveForce(),
+                int nbTroopForcesToSend = Math.min(force.getAggressiveUnitCount(),
                         troopForceToSend(castle, enemyCastle, board));
                 if (nbTroopForcesToSend <= 0) {
                     continue;
                 }
-                if (nbTroopForcesToSend >= force.getAggressiveForce()) {
+                if (nbTroopForcesToSend >= force.getAggressiveUnitCount()) {
                     continue;
                 }
 

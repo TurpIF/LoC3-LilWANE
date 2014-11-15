@@ -14,7 +14,7 @@ public class Force {
         this.simpleUnitCount = simpleUnitCount;
     }
 
-    public Force(float currentForce, float aggressiveRatio, float defensiveRatio, float simpleRatio) {
+    public Force(double currentForce, double aggressiveRatio, double defensiveRatio, double simpleRatio) {
         aggressiveUnitCount = (int) (currentForce * aggressiveRatio);
         defensiveUnitCount = (int) (currentForce * defensiveRatio);
         simpleUnitCount = (int) (currentForce * simpleRatio);
@@ -32,13 +32,13 @@ public class Force {
                 troop.getSimpleUnitCount());
     }
 
-    public static Force createAggressiveForce(Force force, int minimalForce, float aggressiveRatio, float defensiveRatio, float simpleRatio) {
-        float totalRatios = aggressiveRatio + defensiveRatio + simpleRatio;
+    public static Force createAggressiveForce(Force force, int minimalForce, double aggressiveRatio, double defensiveRatio, double simpleRatio) {
+        double totalRatios = aggressiveRatio + defensiveRatio + simpleRatio;
         aggressiveRatio /= totalRatios;
         defensiveRatio /= totalRatios;
         simpleRatio /= totalRatios;
 
-        float currentForce = 0;
+        double currentForce = 0;
         while (currentForce < minimalForce) {
             currentForce += 2 * aggressiveRatio + defensiveRatio + simpleRatio;
         }
@@ -46,15 +46,15 @@ public class Force {
         return new Force(currentForce, aggressiveRatio, defensiveRatio, simpleRatio);
     }
 
-    public static Force createDefensiveForce(Force force, int minimalForce, float aggressiveRatio, float defensiveRatio, float simpleRatio) {
-        float totalRatios = aggressiveRatio + defensiveRatio + simpleRatio;
+    public static Force createDefensiveForce(Force force, int minimalForce, double aggressiveRatio, double defensiveRatio, double simpleRatio) {
+        double totalRatios = aggressiveRatio + defensiveRatio + simpleRatio;
         aggressiveRatio /= totalRatios;
         defensiveRatio /= totalRatios;
         simpleRatio /= totalRatios;
 
-        float currentForce = 0;
+        double currentForce = 0;
         while (currentForce < minimalForce) {
-            currentForce += aggressiveRatio + 2* defensiveRatio + simpleRatio;
+            currentForce += aggressiveRatio + 2 * defensiveRatio + simpleRatio;
         }
 
         return new Force(currentForce, aggressiveRatio, defensiveRatio, simpleRatio);
@@ -82,5 +82,23 @@ public class Force {
 
     public void setSimpleUnitCount(int simpleUnitCount) {
         this.simpleUnitCount = simpleUnitCount;
+    }
+
+    public void remove(Force force) {
+        aggressiveUnitCount -= force.aggressiveUnitCount;
+        defensiveUnitCount -= force.defensiveUnitCount;
+        simpleUnitCount -= force.simpleUnitCount;
+    }
+
+    public int getTotalUnits() {
+        return aggressiveUnitCount + defensiveUnitCount + simpleUnitCount;
+    }
+
+    public int getAggressiveForce() {
+        return aggressiveUnitCount * 2 + defensiveUnitCount + simpleUnitCount;
+    }
+
+    public int getDefensiveForce() {
+        return aggressiveUnitCount + defensiveUnitCount * 2 + simpleUnitCount;
     }
 }
