@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d18d2970-a48d-4267-b637-d22a94fc4bbf" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/loc-gui-1.0.0/logs/2014-11-15_11-30-43-gui.log" afterPath="$PROJECT_DIR$/loc-gui-1.0.0/logs/2014-11-15_11-30-43-gui.log" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/fr/lilwane/bot/Main.java" afterPath="$PROJECT_DIR$/src/main/java/fr/lilwane/bot/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/bot.descriptor" afterPath="$PROJECT_DIR$/src/main/resources/bot.descriptor" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="team-12-java.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -50,8 +49,8 @@
       <file leaf-file-name="Main.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/fr/lilwane/bot/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.30638298" vertical-offset="378" max-vertical-offset="1548">
-              <caret line="29" column="5" selection-start-line="29" selection-start-column="5" selection-end-line="29" selection-end-column="5" />
+            <state vertical-scroll-proportion="0.5361702" vertical-offset="1098" max-vertical-offset="1854">
+              <caret line="75" column="46" selection-start-line="75" selection-start-column="46" selection-end-line="75" selection-end-column="46" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -83,8 +82,8 @@
     <option name="changedFiles">
       <list>
         <option value="$PROJECT_DIR$/src/main/java/fr/d2si/loc/bot/BotTeam.java" />
-        <option value="$PROJECT_DIR$/src/main/java/fr/lilwane/bot/Main.java" />
         <option value="$PROJECT_DIR$/src/main/resources/bot.descriptor" />
+        <option value="$PROJECT_DIR$/src/main/java/fr/lilwane/bot/Main.java" />
       </list>
     </option>
   </component>
@@ -504,7 +503,7 @@
     <configuration default="false" name="game" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.d2si.loc.api.players.MainStartGame" />
       <option name="VM_PARAMETERS" value="" />
-      <option name="PROGRAM_PARAMETERS" value="game-room-dev.loc.d2si 1664 Blackwater.map LilWANE-build-12.jar" />
+      <option name="PROGRAM_PARAMETERS" value="game-room-dev.loc.d2si 1664 Blackwater.map GeorgesRRMartin.dll" />
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" value="" />
@@ -572,7 +571,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1" y="25" width="1442" height="875" extended-state="6" />
+    <frame x="-1" y="25" width="1442" height="875" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -692,8 +691,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/fr/lilwane/bot/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.30638298" vertical-offset="378" max-vertical-offset="1548">
-          <caret line="29" column="5" selection-start-line="29" selection-start-column="5" selection-end-line="29" selection-end-column="5" />
+        <state vertical-scroll-proportion="0.5361702" vertical-offset="1098" max-vertical-offset="1854">
+          <caret line="75" column="46" selection-start-line="75" selection-start-column="46" selection-end-line="75" selection-end-column="46" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

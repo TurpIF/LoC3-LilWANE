@@ -35,6 +35,23 @@ public class Main implements Bot {
         log.info("onGameEnded: winner[" + areYouWinner + "]");
     }
 
+    public Double costCastle(Castle origin, Castle other) {
+        final Integer K = 5; // On investit sur un chateau uniquement pour 5 tours
+        final Double TAU = K / 5.0; // Constante de décharge d'une exp (cf Condensateur)
+
+        Coordinate posOrigin = origin.getPosition();
+        Coordinate posOther = other.getPosition();
+
+        Double dist = Math.sqrt(Math.pow(posOrigin.getX() - posOther.getX(), 2)
+                + Math.pow(posOrigin.getY() - posOther.getY(), 2));
+        Double t = dist / 5.0; // magic number
+
+        // Formule sum(e^(i/tau), i in [0..k])
+        Double gain = (Math.exp((K + 1.0) / TAU) - 1.0) / (Math.exp(1.0 / TAU) - 1.0);
+
+        return gain / (t + K);
+    }
+
     @Override
     public List<Troop> onNewTurn(Board board) {
         // Decide what troops to send on this new turn

@@ -1998,3 +1998,111 @@
 11:43:29 825 [INFO ] [JavaFX Application Thread] PanelController: String selection -> return
 11:44:14 839 [INFO ] [JavaFX Application Thread] PanelController: KeyTyped: ALT
 11:44:14 841 [INFO ] [JavaFX Application Thread] PanelController: KeyTyped: CONTROL
+11:57:38 763 [INFO ] [JavaFX Application Thread] MainController: doLoadGameFile
+11:57:41 199 [INFO ] [JavaFX Application Thread] MainController: User select: /home/turpif/Projects/team-12-java/target/game-2014-11-15T115730.641.game
+11:57:41 199 [INFO ] [JavaFX Application Thread] BoardDeserializer: getGame from [/home/turpif/Projects/team-12-java/target/game-2014-11-15T115730.641.game]
+11:57:41 201 [INFO ] [JavaFX Application Thread] MainController: GameSummary deserialized: turnsCount[47]
+11:57:41 201 [INFO ] [JavaFX Application Thread] PanelController: initializeGame 0
+11:57:41 201 [INFO ] [JavaFX Application Thread] PanelController: initCoordinates: maxX[109] maxY[116] maxWidth[1744] maxHeight[1856]
+11:57:41 202 [INFO ] [JavaFX Application Thread] PanelController: TreeItem selected: [null]
+11:57:41 204 [INFO ] [JavaFX Application Thread] PanelController: TreeItem selected: [TreeItem [ value: Players ]]
+11:57:41 204 [INFO ] [JavaFX Application Thread] PanelController: String selection -> return
+11:57:45 274 [INFO ] [JavaFX Application Thread] PlayerController: doPlay
+11:57:46 278 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[0]
+11:57:46 278 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 1
+11:57:46 278 [INFO ] [JavaFX Application Thread] PanelController: TreeItem selected: [null]
+11:57:46 395 [INFO ] [JavaFX Application Thread] PlayerController: doFastPlay
+11:57:46 903 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[1]
+11:57:46 903 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 2
+11:57:47 406 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[2]
+11:57:47 406 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 3
+11:57:47 907 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[3]
+11:57:47 907 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 4
+11:57:48 397 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[4]
+11:57:48 397 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 5
+11:57:48 905 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[5]
+11:57:48 905 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 6
+11:57:49 407 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[6]
+11:57:49 407 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 7
+11:57:49 896 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[7]
+11:57:49 896 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 8
+11:57:50 402 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[8]
+11:57:50 402 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 9
+11:57:50 911 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[9]
+11:57:50 912 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 10
+11:57:51 408 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[10]
+11:57:51 408 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 11
+11:57:51 908 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[11]
+11:57:51 908 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 12
+11:57:52 407 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[12]
+11:57:52 407 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 13
+11:57:52 904 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[13]
+11:57:52 905 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 14
+11:57:53 400 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[14]
+11:57:53 400 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 15
+11:57:53 898 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[15]
+11:57:53 898 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 16
+11:57:54 397 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[16]
+11:57:54 398 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 17
+11:57:54 911 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[17]
+11:57:54 911 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 18
+11:57:55 396 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[18]
+11:57:55 396 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 19
+11:57:55 897 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[19]
+11:57:55 898 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 20
+11:57:56 399 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[20]
+11:57:56 399 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 21
+11:57:56 908 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[21]
+11:57:56 908 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 22
+11:57:57 404 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[22]
+11:57:57 404 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 23
+11:57:57 910 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[23]
+11:57:57 910 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 24
+11:57:58 400 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[24]
+11:57:58 400 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 25
+11:57:58 899 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[25]
+11:57:58 899 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 26
+11:57:59 397 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[26]
+11:57:59 397 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 27
+11:57:59 907 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[27]
+11:57:59 907 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 28
+11:58:00 397 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[28]
+11:58:00 397 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 29
+11:58:00 909 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[29]
+11:58:00 909 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 30
+11:58:01 399 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[30]
+11:58:01 399 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 31
+11:58:01 903 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[31]
+11:58:01 904 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 32
+11:58:02 409 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[32]
+11:58:02 409 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 33
+11:58:02 900 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[33]
+11:58:02 900 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 34
+11:58:03 401 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[34]
+11:58:03 401 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 35
+11:58:03 911 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[35]
+11:58:03 911 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 36
+11:58:04 400 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[36]
+11:58:04 400 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 37
+11:58:04 903 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[37]
+11:58:04 903 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 38
+11:58:05 404 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[38]
+11:58:05 404 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 39
+11:58:05 904 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[39]
+11:58:05 904 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 40
+11:58:06 402 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[40]
+11:58:06 402 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 41
+11:58:06 907 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[41]
+11:58:06 907 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 42
+11:58:07 407 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[42]
+11:58:07 407 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 43
+11:58:07 904 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[43]
+11:58:07 904 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 44
+11:58:08 406 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[44]
+11:58:08 406 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 45
+11:58:08 897 [INFO ] [JavaFX Application Thread] PlayerController: doNext: currentTurn[45]
+11:58:08 897 [INFO ] [JavaFX Application Thread] PanelController: setNewTurn 46
+11:58:08 898 [INFO ] [JavaFX Application Thread] PanelController: TreeItem selected: [TreeItem [ value: Players ]]
+11:58:08 898 [INFO ] [JavaFX Application Thread] PanelController: String selection -> return
+12:09:00 340 [INFO ] [JavaFX Application Thread] PanelController: KeyTyped: ALT
+12:09:00 350 [INFO ] [JavaFX Application Thread] PanelController: KeyTyped: CONTROL
