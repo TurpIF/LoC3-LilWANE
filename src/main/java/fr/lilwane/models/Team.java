@@ -1,4 +1,4 @@
-package fr.lilwane.bot;
+package fr.lilwane.models;
 
 public enum Team {
     MINE,

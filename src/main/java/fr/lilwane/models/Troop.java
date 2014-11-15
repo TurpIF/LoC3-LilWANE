@@ -1,4 +1,4 @@
-package fr.lilwane.bot;
+package fr.lilwane.models;
 
 public class Troop extends Regiment {
     private Castle source;
