@@ -8,6 +8,9 @@ import com.d2si.loc.api.datas.Troop;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Simple strategy using the "closest is best" method.
+ */
 public class ClosestCastleStrategy implements BotStrategy {
     @Override
     public List<Troop> createNewTroops(Board board) {
