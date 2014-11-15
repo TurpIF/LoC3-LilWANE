@@ -1,4 +1,4 @@
-package main.java.fr.lilwane.bot;
+package fr.lilwane.bot;
 
 public abstract class Regiment {
     /**
