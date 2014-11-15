@@ -52,11 +52,9 @@ public class Main implements Bot {
             // Compute random unit to send
             int unitToSend = r.nextInt(maxUnitToSend) + 1;*/
 
-            // Find a random destination castle
+            // Get all "enemy" castles (opponent or neutral)
             List<Castle> enemyCastles = board.getOpponentsCastles();
-            /*if (enemyCastles.isEmpty()) {
-                continue;
-            }*/
+            enemyCastles.addAll(board.getNeutralCastles());
 
             Coordinate castlePos = castle.getPosition();
             enemyCastles.sort((a, b) -> {
