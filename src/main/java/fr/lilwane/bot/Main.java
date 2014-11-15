@@ -49,16 +49,16 @@ public class Main implements Bot {
             if (maxUnitToSend <= 1) {
                 // Nothing to send on this castle
                 continue;
-            }*/
+            }
 
             // Compute random unit to send
-            //int unitToSend = r.nextInt(maxUnitToSend) + 1;
+            int unitToSend = r.nextInt(maxUnitToSend) + 1;*/
 
             // Find a random destination castle
             List<Castle> enemyCastles = board.getOpponentsCastles();
-            if (enemyCastles.isEmpty()) {
+            /*if (enemyCastles.isEmpty()) {
                 continue;
-            }
+            }*/
 
             Coordinate castlePos = castle.getPosition();
             enemyCastles.sort((a, b) -> {
