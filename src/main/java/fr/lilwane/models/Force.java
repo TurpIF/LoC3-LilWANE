@@ -2,8 +2,13 @@ package fr.lilwane.models;
 
 import com.d2si.loc.api.datas.Castle;
 import com.d2si.loc.api.datas.Troop;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Force {
+    // Main logger
+    private static final Logger log = LogManager.getLogger(Force.class);
+
     private int aggressiveUnitCount;
     private int defensiveUnitCount;
     private int simpleUnitCount;
@@ -39,11 +44,29 @@ public class Force {
         simpleRatio /= totalRatios;
 
         double currentForce = 0;
+        int nbAgg = 0;
+        int nbDef = 0;
+        int nbSim = 0;
         while (currentForce < minimalForce) {
-            currentForce += 2 * aggressiveRatio + defensiveRatio + simpleRatio;
+            double c = currentForce;
+            if (nbAgg < force.getAggressiveUnitCount()) {
+                currentForce += aggressiveRatio * 2;
+                nbAgg++;
+            }
+            if (nbDef < force.getDefensiveUnitCount()) {
+                currentForce += defensiveRatio;
+                nbDef++;
+            }
+            if (nbSim < force.getSimpleUnitCount()) {
+                currentForce += simpleRatio;
+                nbSim++;
+            }
+            if (c == currentForce) {
+                break;
+            }
         }
 
-        return new Force(currentForce, aggressiveRatio, defensiveRatio, simpleRatio);
+        return new Force(nbAgg, nbDef, nbSim);
     }
 
     public static Force createDefensiveForce(Force force, int minimalForce, double aggressiveRatio, double defensiveRatio, double simpleRatio) {
@@ -53,11 +76,30 @@ public class Force {
         simpleRatio /= totalRatios;
 
         double currentForce = 0;
+        int nbAgg = 0;
+        int nbDef = 0;
+        int nbSim = 0;
         while (currentForce < minimalForce) {
-            currentForce += aggressiveRatio + 2 * defensiveRatio + simpleRatio;
+            double c = currentForce;
+
+            if (nbAgg < force.getAggressiveUnitCount()) {
+                currentForce += aggressiveRatio;
+                nbAgg++;
+            }
+            if (nbDef < force.getDefensiveUnitCount()) {
+                currentForce += defensiveRatio * 2;
+                nbDef++;
+            }
+            if (nbSim < force.getSimpleUnitCount()) {
+                currentForce += simpleRatio;
+                nbSim++;
+            }
+            if (c == currentForce) {
+                break;
+            }
         }
 
-        return new Force(currentForce, aggressiveRatio, defensiveRatio, simpleRatio);
+        return new Force(nbAgg, nbDef, nbSim);
     }
 
     public int getAggressiveUnitCount() {

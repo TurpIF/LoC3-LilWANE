@@ -2,6 +2,8 @@ package fr.lilwane.bot.strategies;
 
 import com.d2si.loc.api.datas.*;
 import fr.lilwane.models.Force;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +16,7 @@ import java.util.stream.Collectors;
  * NOTE : WINTER IS COMING !!!
  */
 public class WinterCapacitorStrategy implements BotStrategy {
+    private static final Logger log = LogManager.getLogger(WinterCapacitorStrategy.class);
 
     /**
      * Fraction of the budget (troops newly created) allocated to expansion.
@@ -53,16 +56,16 @@ public class WinterCapacitorStrategy implements BotStrategy {
     private void sendTroops(Castle from, Castle to, int forceToSend) {
         Force force;
         if (to.getOwner().equals(Owner.Mine)) {
-            force = Force.createDefensiveForce(new Force(from), forceToSend, 1.0, 1.0, 1.0);
+            force = Force.createDefensiveForce(new Force(from), forceToSend, 0.1, 0.1, 1.0);
         }
         else {
-            force = Force.createAggressiveForce(new Force(from), forceToSend, 1.0, 1.0, 1.0);
+            force = Force.createAggressiveForce(new Force(from), forceToSend, 1.0, 0.1, 0.1);
         }
         castleForces.get(from).remove(force);
         Troop troop = new Troop(to, from,
-                force.getAggressiveUnitCount(),
-                force.getDefensiveUnitCount(),
-                force.getSimpleUnitCount());
+                Math.max(0, force.getAggressiveUnitCount() - 1),
+                Math.max(0, force.getDefensiveUnitCount() - 1),
+                Math.max(0, force.getSimpleUnitCount() - 1));
         troopsToSendOnThisTurn.add(troop);
         troopDestinations.put(troop, to);
     }
@@ -199,15 +202,14 @@ public class WinterCapacitorStrategy implements BotStrategy {
                 }
 
                 // Send the minimum amount of units (not all nbSoldiers though)
-                int nbTroopForcesToSend = Math.min(force.getAggressiveUnitCount(),
+                int nbTroopForcesToSend = Math.min(force.getAggressiveForce(),
                         troopForceToSend(castle, enemyCastle, board));
                 if (nbTroopForcesToSend <= 0) {
                     continue;
                 }
-                if (nbTroopForcesToSend >= force.getAggressiveUnitCount()) {
+                if (nbTroopForcesToSend >= force.getAggressiveForce()) {
                     continue;
                 }
-
                 sendTroops(castle, enemyCastle, nbTroopForcesToSend);
             }
         }
