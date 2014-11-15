@@ -1,4 +1,4 @@
-package fr.lilwane.models;
+package fr.lilwane.models.old;
 
 public class Castle extends Regiment {
     /**

@@ -1,4 +1,4 @@
-package fr.lilwane.models;
+package fr.lilwane.models.old;
 
 public abstract class Regiment {
     /**
