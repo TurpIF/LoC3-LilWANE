@@ -22,7 +22,7 @@ public class WinterCapacitorStrategy implements BotStrategy {
      * Fraction of the budget (troops newly created) allocated to expansion.
      * A higher value means more defensive, a lower means more offensive.
      */
-    public static final double EXPANSION_BUDGET = 1.0;
+    public static final double EXPANSION_BUDGET = 1.3;
 
     /**
      * Since the game's objective is mainly to have castles, tilt the bot in favor of conquering new castles.
@@ -116,7 +116,6 @@ public class WinterCapacitorStrategy implements BotStrategy {
             forceCount = force.getAggressiveForce();
         }
 
-
         // On enlève nos troupes en déplacement
         forceCount -= board.getMineTroops()
                 .stream()
@@ -202,8 +201,7 @@ public class WinterCapacitorStrategy implements BotStrategy {
                 }
 
                 // Send the minimum amount of units (not all nbSoldiers though)
-                int nbTroopForcesToSend = Math.min(force.getAggressiveForce(),
-                        troopForceToSend(castle, enemyCastle, board));
+                int nbTroopForcesToSend = troopForceToSend(castle, enemyCastle, board);
                 if (nbTroopForcesToSend <= 0) {
                     continue;
                 }
