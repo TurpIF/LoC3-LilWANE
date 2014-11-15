@@ -22,7 +22,9 @@ public class WinterCapacitorStrategy implements BotStrategy {
      * Fraction of the budget (troops newly created) allocated to expansion.
      * A higher value means more defensive, a lower means more offensive.
      */
-    public static final double EXPANSION_BUDGET = 1.3;
+    public static final double AGGRESSIVE_EXPANSION_BUDGET = 1.1;
+    public static final double DEFENSIVE_EXPANSION_BUDGET = 3.0;
+    public static final double SIMPLE_EXPANSION_BUDGET = 1.1;
 
     /**
      * Since the game's objective is mainly to have castles, tilt the bot in favor of conquering new castles.
@@ -49,8 +51,31 @@ public class WinterCapacitorStrategy implements BotStrategy {
         castleForces.clear();
 
         for (Castle c : board.getCastles()) {
-            castleForces.put(c, new Force(c).divide(EXPANSION_BUDGET));
+            Force force = new Force(c).divide(getExpansionBudget(c));
+            castleForces.put(c, force);
+            castleForces.get(c).remove(optimalDefensiveForce(board, c));
         }
+    }
+
+    private double getExpansionBudget(Castle c) {
+        switch (c.getUnitType()) {
+            case Agressive:
+                return AGGRESSIVE_EXPANSION_BUDGET;
+            case Defensive:
+                return DEFENSIVE_EXPANSION_BUDGET;
+            case Simple:
+                return SIMPLE_EXPANSION_BUDGET;
+        }
+        return SIMPLE_EXPANSION_BUDGET;
+    }
+
+    private Force optimalDefensiveForce(Board board, Castle castle) {
+        return Force.createDefensiveForce(castleForces.get(castle),
+                board.getOpponentsTroops()
+                .stream()
+                .filter(t -> t.getDestination().equals(castle))
+                .mapToInt(t -> new Force(t).getAggressiveForce())
+                .sum(), 0.1, 0.1, 1.0);
     }
 
     private void sendTroops(Castle from, Castle to, int forceToSend) {
@@ -86,6 +111,22 @@ public class WinterCapacitorStrategy implements BotStrategy {
         return dist / UNIT_SPEED;
     }
 
+    /**
+     * Computes the time estimated to move a new troop from troop "troop" to castle "castle".
+     *
+     * @param troop the origin castle
+     * @param castle the destination castle
+     * @return the time cost to go from origin to other
+     */
+    private Double timeToGo(Troop troop, Castle castle) {
+        Coordinate posOrigin = troop.getPosition();
+        Coordinate posOther = castle.getPosition();
+
+        Double dist = Math.sqrt(Math.pow(posOrigin.getX() - posOther.getX(), 2)
+                + Math.pow(posOrigin.getY() - posOther.getY(), 2));
+        return dist / UNIT_SPEED;
+    }
+
     private Castle getTroopDestination(Troop troop) {
         if (troopDestinations.containsKey(troop)) {
             return troopDestinations.get(troop);
@@ -97,7 +138,7 @@ public class WinterCapacitorStrategy implements BotStrategy {
         Force force = new Force(other);
 
         // On prend en compte la croissance
-        int n = other.getGrowthRate() * ((int) Math.ceil(timeToGo(origin, other)) + 1);
+        int n = other.getGrowthRate() * ((int) Math.ceil(timeToGo(origin, other)));
         if (other.getUnitType().equals(UnitType.Simple)) {
             force.setSimpleUnitCount(force.getSimpleUnitCount() + n);
         }
@@ -107,6 +148,12 @@ public class WinterCapacitorStrategy implements BotStrategy {
         if (other.getUnitType().equals(UnitType.Defensive)) {
             force.setDefensiveUnitCount(force.getDefensiveUnitCount() + n);
         }
+
+        log.debug("castle : " + other.getName()
+        + " nbA : " + force.getAggressiveUnitCount()
+        + " nbD : " + force.getDefensiveUnitCount()
+        + " nbS : " + force.getSimpleUnitCount()
+        + " grow : " + (other.getGrowthRate() * ((int) Math.ceil(timeToGo(origin, other)))));
 
         int forceCount;
         if (other.getOwner().equals(Owner.Mine)) {
@@ -205,6 +252,8 @@ public class WinterCapacitorStrategy implements BotStrategy {
                 if (nbTroopForcesToSend <= 0) {
                     continue;
                 }
+                log.debug("castle : " + enemyCastle.getName() + " # nbTroupForcesToSend : "
+                        + nbTroopForcesToSend + " force : " + castleForces.get(castle).getAggressiveForce());
                 if (nbTroopForcesToSend >= force.getAggressiveForce()) {
                     continue;
                 }
