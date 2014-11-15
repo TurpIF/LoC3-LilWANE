@@ -45,8 +45,8 @@ public class Main implements Bot {
         for (Castle castle : myCastles) {
 
             // Get all "enemy" castles (opponent or neutral)
-            List<Castle> enemyCastles = board.getOpponentsCastles();
-            enemyCastles.addAll(board.getNeutralCastles());
+            List<Castle> enemyCastles = board.getNeutralCastles();
+            enemyCastles.addAll(board.getOpponentsCastles());
 
             Coordinate castlePos = castle.getPosition();
             enemyCastles.sort((a, b) -> {

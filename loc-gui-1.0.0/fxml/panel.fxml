@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.d2si.loc.gui.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.transform.Scale?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<SplitPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.d2si.loc.gui.PanelController" fx:id="rootPane" orientation="HORIZONTAL">
+	<items>
+
+		<BorderPane>
+			<top>
+				<Label text="Units:" textAlignment="CENTER" />
+			</top>
+			<center>
+				<TreeView fx:id="leftTree" prefWidth="200" editable="false">
+				</TreeView>
+			</center>
+		</BorderPane>
+
+		<BorderPane>
+			<padding>
+				<Insets bottom="0.0" left="5.0" right="5.0" top="12.0" />
+			</padding>
+			<center>
+				<SplitPane fx:id="splitPane" orientation="VERTICAL">
+					<items>
+						<ScrollPane fx:id="scrollPane" hbarPolicy="ALWAYS" vbarPolicy="ALWAYS" pannable="true">
+							<content>
+								<Group fx:id="scrollGroup">
+									<children>
+										<StackPane fx:id="pane">
+											<children>
+												<Canvas fx:id="layerBackground" />
+												<Canvas fx:id="layerPlaces" />
+												<Canvas fx:id="layerTroops" />
+												<Canvas fx:id="layerTraveling" />
+												<Canvas fx:id="layerTexts" />
+												<Canvas fx:id="layerSelection"/>
+											</children>
+										</StackPane>
+									</children>
+								</Group>
+							</content>
+						</ScrollPane>
+						<BorderPane>
+						  <left>
+    						<Label fx:id="selectionLabel" minHeight="50" maxHeight="150" text="" />
+						  </left>
+						  <center>
+						  	<TextArea fx:id="selectionTextArea" prefRowCount="10" wrapText="false" editable="false" />
+						  </center>
+						</BorderPane>
+					</items>
+				</SplitPane>
+			</center>
+		</BorderPane>
+
+		<BorderPane>
+			<top>
+				<Label text="Units:" textAlignment="CENTER" />
+			</top>
+			<center>
+				<TreeView fx:id="rightTree" prefWidth="200" editable="false">
+				</TreeView>
+			</center>
+		</BorderPane>
+
+	</items>
+</SplitPane>
