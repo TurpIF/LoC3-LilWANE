@@ -20,6 +20,29 @@ public class CapacitorSimulatorStrategy implements BotStrategy {
         return dist / UNIT_SPEED;
     }
 
+    private Integer troopsToSend(Castle origin, Castle other, Board board) {
+        int  n = other.getUnitCount() + 1;
+
+        // On prend en compte la croissance
+        // n += other.getGrowthRate() * (int) Math.floor(timeToGo(origin, other));
+
+        // On enlève nos troupes en déplacement
+        n -= board.getMineTroops()
+                .stream()
+                .filter(t -> t.getDestination().equals(other))
+                .mapToInt(Troop::getUnitCount)
+                .sum();
+
+        // On ajoute les troupes ennemies en déplacement
+        n += board.getOpponentsTroops()
+                .stream()
+                .filter(t -> t.getDestination().equals(other))
+                .mapToInt(Troop::getUnitCount)
+                .sum();
+
+        return n;
+    }
+
     private Double costCastle(Castle origin, Castle other) {
         final Integer K = 5; // On investit sur un chateau uniquement pour 5 tours
         final Double TAU = K / 5.0; // Constante de décharge d'une exp (cf Condensateur)
@@ -73,10 +96,10 @@ public class CapacitorSimulatorStrategy implements BotStrategy {
                 }
 
                 // Send the minumum amount of units (not all nbSoldiers though)
-                int nbUnitsToSend = Math.min(nbSoldiers - 1,
-                        enemyCastle.getUnitCount()
-                        // + enemyCastle.getGrowthRate() * timeToGo(castle, enemyCastle).intValue()
-                        + 1);
+                int nbUnitsToSend = Math.min(nbSoldiers - 1, troopsToSend(castle, enemyCastle, board));
+                if (nbUnitsToSend <= 0) {
+                    continue;
+                }
                 Troop troop = new Troop(enemyCastle, castle, nbUnitsToSend);
                 nbSoldiers -= nbUnitsToSend;
                 troopsToSendOnThisTurn.add(troop);
