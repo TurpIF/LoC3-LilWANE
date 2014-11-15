@@ -96,7 +96,7 @@
 
 		<dependency>
 			<groupId>com.d2si.loc</groupId>
-			<artifactId>loc-api-java-v2</artifactId>
+			<artifactId>loc-api-java-v3</artifactId>
 			<version>1.0.0</version>
 		</dependency>
 	</dependencies>

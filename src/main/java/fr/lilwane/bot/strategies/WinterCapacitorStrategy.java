@@ -10,8 +10,9 @@ import java.util.stream.Collectors;
 
 /**
  * Strategy using a capacitor model to simulate investing in castle.
+ * NOTE : WINTER IS COMING !!!
  */
-public class CapacitorSimulatorStrategy implements BotStrategy {
+public class WinterCapacitorStrategy implements BotStrategy {
 
     /**
      * Fraction of the budget (troops newly created) allocated to expansion.
@@ -70,8 +71,8 @@ public class CapacitorSimulatorStrategy implements BotStrategy {
         return troop.getDestination();
     }
 
-    private Integer troopsToSend(Castle origin, Castle other, Board board) {
-        int  n = other.getUnitCount() + 1;
+    private Integer troopForceToSend(Castle origin, Castle other, Board board) {
+        int  n = other.getAggressiveUnitCount() + other.getDefensiveUnitCount() * 2 + other.getSimpleUnitCount() + 1;
 
         // On prend en compte la croissance
         n += other.getGrowthRate() * ((int) Math.ceil(timeToGo(origin, other)) + 1);
@@ -80,14 +81,14 @@ public class CapacitorSimulatorStrategy implements BotStrategy {
         n -= board.getMineTroops()
                 .stream()
                 .filter(t -> getTroopDestination(t).equals(other))
-                .mapToInt(Troop::getUnitCount)
+                .mapToInt(t -> t.getAggressiveUnitCount() * 2 + t.getDeffensiveUnitCount() + t.getSimpleUnitCount())
                 .sum();
 
         // On ajoute les troupes ennemies en déplacement
         n += board.getOpponentsTroops()
                 .stream()
                 .filter(t -> t.getDestination().equals(other))
-                .mapToInt(Troop::getUnitCount)
+                .mapToInt(t -> t.getAggressiveUnitCount() + t.getDeffensiveUnitCount() * 2 + t.getSimpleUnitCount())
                 .sum();
 
         return n;
@@ -141,28 +142,28 @@ public class CapacitorSimulatorStrategy implements BotStrategy {
 
             allCastles.sort((a, b) -> costCastle(castle, b).compareTo(costCastle(castle, a)));
 
-            int nbSoldiers = (int) (castle.getUnitCount() / EXPANSION_BUDGET) - 1;
+            int nbAggressiveUnits = (int) (castle.getAggressiveUnitCount() / EXPANSION_BUDGET);
+            int nbDefensiveUnits = (int) (castle.getDefensiveUnitCount() / EXPANSION_BUDGET);
+            int nbSimpleUnits = (int) (castle.getDefensiveUnitCount() / EXPANSION_BUDGET);
             for (Castle enemyCastle : allCastles) {
                 // Leave at least one soldier on the castle
-                if (nbSoldiers <= 1) {
+                if (nbAggressiveUnits + nbDefensiveUnits + nbSimpleUnits <= 1) {
                     break;
                 }
 
                 // Send the minimum amount of units (not all nbSoldiers though)
-                int nbUnitsToSend = Math.min(nbSoldiers, troopsToSend(castle, enemyCastle, board));
-                if (nbUnitsToSend <= 0) {
+                int nbTroopForcesToSend = Math.min(nbSoldiers, troopForceToSend(castle, enemyCastle, board));
+                if (nbTroopForcesToSend <= 0) {
                     continue;
                 }
-                if (nbUnitsToSend >= nbSoldiers) {
+                if (nbTroopForcesToSend >= nbSoldiers) {
                     continue;
                 }
 
-                nbSoldiers -= nbUnitsToSend;
-                sendTroops(castle, enemyCastle, nbUnitsToSend);
+                nbSoldiers -= nbTroopForcesToSend;
+                sendTroops(castle, enemyCastle, nbTroopForcesToSend);
             }
         }
-
-
 
         return troopsToSendOnThisTurn;
     }

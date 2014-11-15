@@ -4,7 +4,7 @@ import com.d2si.loc.api.Bot;
 import com.d2si.loc.api.datas.Board;
 import com.d2si.loc.api.datas.Troop;
 import fr.lilwane.bot.strategies.BotStrategy;
-import fr.lilwane.bot.strategies.CapacitorSimulatorStrategy;
+import fr.lilwane.bot.strategies.WinterCapacitorStrategy;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,7 +15,7 @@ public class Main implements Bot {
     private static final Logger log = LogManager.getLogger(Main.class);
 
     // Bot strategy
-    BotStrategy strategy = new CapacitorSimulatorStrategy();
+    BotStrategy strategy = new WinterCapacitorStrategy();
 
 
     @Override
