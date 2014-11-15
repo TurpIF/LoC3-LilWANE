@@ -9,30 +9,35 @@ import java.util.stream.Collectors;
 public class CapacitorSimulatorStrategy implements BotStrategy {
     public static final int EXPANSION_BUDGET = 3;
     public static final int NEW_CASTLE_GAIN = 100;
+    public static final double UNIT_SPEED = 5.0;
 
-    private Double costCastle(Castle origin, Castle other) {
-        final Integer K = 5; // On investit sur un chateau uniquement pour 5 tours
-        final Double TAU = K / 5.0; // Constante de décharge d'une exp (cf Condensateur)
-
+    private Double timeToGo(Castle origin, Castle other) {
         Coordinate posOrigin = origin.getPosition();
         Coordinate posOther = other.getPosition();
 
         Double dist = Math.sqrt(Math.pow(posOrigin.getX() - posOther.getX(), 2)
                 + Math.pow(posOrigin.getY() - posOther.getY(), 2));
-        Double t = dist / 5.0; // magic number
+        return dist / UNIT_SPEED;
+    }
+
+    private Double costCastle(Castle origin, Castle other) {
+        final Integer K = 5; // On investit sur un chateau uniquement pour 5 tours
+        final Double TAU = K / 5.0; // Constante de décharge d'une exp (cf Condensateur)
+
+        Double t = timeToGo(origin, other);
 
         // Limite max de prod
         int k = Math.min(K, other.getRemainingUnitToCreate() / other.getGrowthRate());
 
-        // Formule sum(e^(i/tau), i in [0..k])
         Double gain = 0.0;
         Double loss = 0.0;
 
         if (!other.getOwner().equals(Owner.Mine)) {
-            loss = (double) other.getUnitCount();
+            loss = (double) other.getUnitCount() + other.getGrowthRate() * t;
         }
 
         if (!other.getOwner().equals(Owner.Mine)) {
+            // Formule sum(e^(i/tau), i in [0..k])
             gain = (Math.exp((k + 1.0) / TAU) - 1.0) / (Math.exp(1.0 / TAU) - 1.0) * other.getGrowthRate();
             gain += NEW_CASTLE_GAIN;
         }
@@ -68,7 +73,10 @@ public class CapacitorSimulatorStrategy implements BotStrategy {
                 }
 
                 // Send the minumum amount of units (not all nbSoldiers though)
-                int nbUnitsToSend = Math.min(nbSoldiers - 1, enemyCastle.getUnitCount() + 1);
+                int nbUnitsToSend = Math.min(nbSoldiers - 1,
+                        enemyCastle.getUnitCount()
+                        // + enemyCastle.getGrowthRate() * timeToGo(castle, enemyCastle).intValue()
+                        + 1);
                 Troop troop = new Troop(enemyCastle, castle, nbUnitsToSend);
                 nbSoldiers -= nbUnitsToSend;
                 troopsToSendOnThisTurn.add(troop);

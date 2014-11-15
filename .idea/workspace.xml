@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d18d2970-a48d-4267-b637-d22a94fc4bbf" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/loc-gui-1.0.0/logs/2014-11-15_11-30-43-gui.log" afterPath="$PROJECT_DIR$/loc-gui-1.0.0/logs/2014-11-15_11-30-43-gui.log" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/fr/lilwane/bot/strategies/CapacitorSimulatorStrategy.java" afterPath="$PROJECT_DIR$/src/main/java/fr/lilwane/bot/strategies/CapacitorSimulatorStrategy.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -83,8 +84,8 @@
       <file leaf-file-name="CapacitorSimulatorStrategy.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/fr/lilwane/bot/strategies/CapacitorSimulatorStrategy.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.35140997" vertical-offset="0" max-vertical-offset="1476">
-              <caret line="13" column="27" selection-start-line="13" selection-start-column="27" selection-end-line="13" selection-end-column="27" />
+            <state vertical-scroll-proportion="0.5314534" vertical-offset="1069" max-vertical-offset="1620">
+              <caret line="77" column="58" selection-start-line="77" selection-start-column="58" selection-end-line="77" selection-end-column="58" />
               <folding />
             </state>
           </provider>
@@ -794,8 +795,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/fr/lilwane/bot/strategies/CapacitorSimulatorStrategy.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.35140997" vertical-offset="0" max-vertical-offset="1476">
-          <caret line="13" column="27" selection-start-line="13" selection-start-column="27" selection-end-line="13" selection-end-column="27" />
+        <state vertical-scroll-proportion="0.5314534" vertical-offset="1069" max-vertical-offset="1620">
+          <caret line="77" column="58" selection-start-line="77" selection-start-column="58" selection-end-line="77" selection-end-column="58" />
           <folding />
         </state>
       </provider>
