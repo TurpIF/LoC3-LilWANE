@@ -1,9 +1,7 @@
 package fr.lilwane.bot;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Random;
 
 import com.d2si.loc.api.Bot;
 import com.d2si.loc.api.datas.Board;
@@ -17,7 +15,7 @@ import org.apache.logging.log4j.Logger;
 public class Main implements Bot {
     private static final Logger log = LogManager.getLogger(Main.class);
 
-    private Random r = new Random();
+    //private Random r = new Random();
 
     @Override
     public void init(Board board) {
