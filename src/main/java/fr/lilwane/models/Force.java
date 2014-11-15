@@ -126,12 +126,6 @@ public class Force {
         this.simpleUnitCount = simpleUnitCount;
     }
 
-    public void remove(Force force) {
-        aggressiveUnitCount -= force.aggressiveUnitCount;
-        defensiveUnitCount -= force.defensiveUnitCount;
-        simpleUnitCount -= force.simpleUnitCount;
-    }
-
     public int getTotalUnits() {
         return aggressiveUnitCount + defensiveUnitCount + simpleUnitCount;
     }
@@ -142,5 +136,17 @@ public class Force {
 
     public int getDefensiveForce() {
         return aggressiveUnitCount + defensiveUnitCount * 2 + simpleUnitCount;
+    }
+
+    public void remove(Force force) {
+        aggressiveUnitCount -= force.aggressiveUnitCount;
+        defensiveUnitCount -= force.defensiveUnitCount;
+        simpleUnitCount -= force.simpleUnitCount;
+    }
+
+    public void divide(double amount) {
+        aggressiveUnitCount /= amount;
+        defensiveUnitCount /= amount;
+        simpleUnitCount /= amount;
     }
 }
