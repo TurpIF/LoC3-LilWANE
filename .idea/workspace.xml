@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d18d2970-a48d-4267-b637-d22a94fc4bbf" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/loc-gui-1.0.0/logs/2014-11-15_11-30-43-gui.log" afterPath="$PROJECT_DIR$/loc-gui-1.0.0/logs/2014-11-15_11-30-43-gui.log" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/lilwane/bot/strategies/BotStrategy.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/fr/lilwane/bot/strategies/ClosestCastleStrategy.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/fr/lilwane/bot/Main.java" afterPath="$PROJECT_DIR$/src/main/java/fr/lilwane/bot/Main.java" />
     </list>
     <ignored path="team-12-java.iws" />
@@ -49,10 +50,12 @@
       <file leaf-file-name="Main.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/fr/lilwane/bot/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5361702" vertical-offset="1098" max-vertical-offset="1854">
-              <caret line="75" column="46" selection-start-line="75" selection-start-column="46" selection-end-line="75" selection-end-column="46" />
+            <state vertical-scroll-proportion="0.66459626" vertical-offset="741" max-vertical-offset="1224">
+              <caret line="59" column="27" selection-start-line="59" selection-start-column="27" selection-end-line="59" selection-end-column="27" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#1977#1978#0" expanded="true" />
+                <element signature="e#2031#2032#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -645,6 +648,8 @@
           <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1977#1978#0" expanded="true" />
+            <element signature="e#2031#2032#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -691,10 +696,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/fr/lilwane/bot/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5361702" vertical-offset="1098" max-vertical-offset="1854">
-          <caret line="75" column="46" selection-start-line="75" selection-start-column="46" selection-end-line="75" selection-end-column="46" />
+        <state vertical-scroll-proportion="0.66459626" vertical-offset="741" max-vertical-offset="1224">
+          <caret line="59" column="27" selection-start-line="59" selection-start-column="27" selection-end-line="59" selection-end-column="27" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1977#1978#0" expanded="true" />
+            <element signature="e#2031#2032#0" expanded="true" />
           </folding>
         </state>
       </provider>
