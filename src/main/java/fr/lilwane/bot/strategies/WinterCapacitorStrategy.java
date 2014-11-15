@@ -1,6 +1,7 @@
 package fr.lilwane.bot.strategies;
 
 import com.d2si.loc.api.datas.*;
+import fr.lilwane.bot.Helpers;
 import fr.lilwane.models.Force;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,24 +33,26 @@ public class WinterCapacitorStrategy implements BotStrategy {
      */
     public static final int NEW_CASTLE_GAIN = 100;
 
-    /**
-     * Speed of a unit.
-     * TODO this should be app-global
-     */
-    public static final double UNIT_SPEED = 5.0;
+    public static final int CASTLE_INVESTMENT_DURATION = 5;
 
     // Decide what troops to send on this new turn
     private List<Troop> troopsToSendOnThisTurn = new ArrayList<>();
-
     private Map<Troop, Castle> troopDestinations = new HashMap<>();
-
     private Map<Castle, Force> castleForces = new HashMap<>();
 
+    /**
+     * Reinitialize everything for this turn.
+     *
+     * @param board
+     */
     private void init(Board board) {
         troopsToSendOnThisTurn.clear();
         troopDestinations.clear();
         castleForces.clear();
 
+        /**
+         * Initialize current turn castle forces (ours).
+         */
         for (Castle c : board.getCastles()) {
             Force force = new Force(c).divide(getExpansionBudget(c));
             castleForces.put(c, force);
@@ -57,6 +60,13 @@ public class WinterCapacitorStrategy implements BotStrategy {
         }
     }
 
+    /**
+     * Get the expansion budget for one of our castle.
+     * TODO make this dynamic somehow
+     *
+     * @param c
+     * @return the expansion budget for the given castle
+     */
     private double getExpansionBudget(Castle c) {
         switch (c.getUnitType()) {
             case Agressive:
@@ -69,6 +79,13 @@ public class WinterCapacitorStrategy implements BotStrategy {
         return SIMPLE_EXPANSION_BUDGET;
     }
 
+    /**
+     * Compute the optimal force to use for defense.
+     *
+     * @param board
+     * @param castle
+     * @return the optimal defensive force
+     */
     private Force optimalDefensiveForce(Board board, Castle castle) {
         return Force.createDefensiveForce(castleForces.get(castle),
                 board.getOpponentsTroops()
@@ -78,6 +95,13 @@ public class WinterCapacitorStrategy implements BotStrategy {
                 .sum(), 0.1, 0.1, 1.0);
     }
 
+    /**
+     * Send troops from one castle to another, given a force to send.
+     *
+     * @param from
+     * @param to
+     * @param forceToSend
+     */
     private void sendTroops(Castle from, Castle to, int forceToSend) {
         Force force;
         if (to.getOwner().equals(Owner.Mine)) {
@@ -103,12 +127,7 @@ public class WinterCapacitorStrategy implements BotStrategy {
      * @return the time cost to go from origin to other
      */
     private Double timeToGo(Castle origin, Castle other) {
-        Coordinate posOrigin = origin.getPosition();
-        Coordinate posOther = other.getPosition();
-
-        Double dist = Math.sqrt(Math.pow(posOrigin.getX() - posOther.getX(), 2)
-                + Math.pow(posOrigin.getY() - posOther.getY(), 2));
-        return dist / UNIT_SPEED;
+        return Helpers.unitTravelingTime(origin, other);
     }
 
     /**
@@ -116,17 +135,18 @@ public class WinterCapacitorStrategy implements BotStrategy {
      *
      * @param troop the origin castle
      * @param castle the destination castle
-     * @return the time cost to go from origin to other
+     * @return the time cost to go from origin to castle
      */
     private Double timeToGo(Troop troop, Castle castle) {
-        Coordinate posOrigin = troop.getPosition();
-        Coordinate posOther = castle.getPosition();
-
-        Double dist = Math.sqrt(Math.pow(posOrigin.getX() - posOther.getX(), 2)
-                + Math.pow(posOrigin.getY() - posOther.getY(), 2));
-        return dist / UNIT_SPEED;
+        return Helpers.unitTravelingTime(troop, castle);
     }
 
+    /**
+     * Get the troop destination, taking into account current chosen motion.
+     *
+     * @param troop
+     * @return
+     */
     private Castle getTroopDestination(Troop troop) {
         if (troopDestinations.containsKey(troop)) {
             return troopDestinations.get(troop);
@@ -137,12 +157,12 @@ public class WinterCapacitorStrategy implements BotStrategy {
     private Integer troopForceToSend(Castle origin, Castle other, Board board) {
         Force force = new Force(other);
 
-        // On prend en compte la croissance
-        int n = 0;
-        if (!other.getOwner().equals(Owner.Neutral)) {
-            n = other.getGrowthRate() * ((int) Math.ceil(timeToGo(origin, other)) + 1);
-        }
+        // Take castle growth into account (neutrals don't grow)
+        int n = (!other.getOwner().equals(Owner.Neutral))
+                ? other.getGrowthRate() * ((int) Math.ceil(timeToGo(origin, other)) + 1)
+                : 0;
 
+        // Apply growth
         if (other.getUnitType().equals(UnitType.Simple)) {
             force.setSimpleUnitCount(force.getSimpleUnitCount() + n);
         }
@@ -159,27 +179,24 @@ public class WinterCapacitorStrategy implements BotStrategy {
         + " nbS : " + force.getSimpleUnitCount()
         + " grow : " + (other.getGrowthRate() * ((int) Math.ceil(timeToGo(origin, other)))));
 
-        int forceCount;
-        if (other.getOwner().equals(Owner.Mine)) {
-            forceCount = force.getDefensiveForce();
-        }
-        else {
-            forceCount = force.getAggressiveForce();
-        }
+        // Apply the force count depending on the context (defending or attacking)
+        int forceCount = (other.getOwner().equals(Owner.Mine))
+            ? force.getDefensiveForce()
+            : force.getAggressiveForce();
 
-        // On enlève nos troupes en déplacement
+        // Remove troops moving there
         forceCount -= board.getMineTroops()
                 .stream()
                 .filter(t -> getTroopDestination(t).equals(other))
                 .mapToInt(t -> {
-                    if (other.getOwner().equals(Owner.Mine)) {
-                        return new Force(t).getDefensiveForce();
-                    }
-                    return new Force(t).getAggressiveForce();
+                    Force f = new Force(t);
+                    return (other.getOwner().equals(Owner.Mine))
+                        ? f.getDefensiveForce()
+                        : f.getAggressiveForce();
                 })
                 .sum();
 
-        // On ajoute les troupes ennemies en déplacement
+        // Add enemy troops coming here
         forceCount += board.getOpponentsTroops()
                 .stream()
                 .filter(t -> t.getDestination().equals(other))
@@ -203,37 +220,39 @@ public class WinterCapacitorStrategy implements BotStrategy {
      * @return the cost to invest in a castle
      */
     private Double costCastle(Castle origin, Castle other) {
-        final Integer K = 5; // On investit sur un chateau uniquement pour 5 tours
-        final Double TAU = K / 5.0; // Constante de décharge d'une exp (cf Condensateur)
+        // Invest on a castle following a capacitor's unloading law
+        final Integer K = CASTLE_INVESTMENT_DURATION;
+        final Double TAU = K / 5.0;
 
+        // Time to go there
         Double t = timeToGo(origin, other);
 
-        // Limite max de prod
+        // Don't create too many units
         int k = Math.min(K, other.getRemainingUnitToCreate() / other.getGrowthRate());
 
+        // Compute the gain expected from getting another castle
         Double gain = 0.0;
-        Double loss = 0.0;
-
         if (!other.getOwner().equals(Owner.Mine)) {
-            loss = (double) new Force(other).getDefensiveForce()
+            gain -= (double) new Force(other).getDefensiveForce()
                     + other.getGrowthRate() * t * (other.getUnitType().equals(UnitType.Defensive) ? 2 : 1);
-        }
 
-        if (!other.getOwner().equals(Owner.Mine)) {
-            // Formule sum(e^(i/tau), i in [0..k])
+            // sum(e^(i/tau), i in [0..k])
             double gainUnit = (Math.exp((k + 1.0) / TAU) - 1.0) / (Math.exp(1.0 / TAU) - 1.0) * other.getGrowthRate();
             gain += gainUnit * (other.getUnitType().equals(UnitType.Simple) ? 1 : 2);
+
+            // Apply an extra gain to incite the AI to get new castles
             gain += NEW_CASTLE_GAIN;
         }
 
-        return (gain - loss) / (t + K);
+        return gain / (t + K);
     }
 
-    @Override
-    public List<Troop> createNewTroops(Board board) {
-        init(board);
-
-        // Send units on each castles I own
+    /**
+     * Expand by simply sending units to castles we are sure we can conquer.
+     *
+     * @param board
+     */
+    private void basicExpansionStep(Board board) {
         List<Castle> myCastles = board.getMineCastles();
         for (Castle castle : myCastles) {
             // Get all "enemy" castles (opponent or neutral)
@@ -264,9 +283,14 @@ public class WinterCapacitorStrategy implements BotStrategy {
                 sendTroops(castle, enemyCastle, nbTroopForcesToSend);
             }
         }
+    }
 
-        // Attaque des Ewoks : réunir pour régner
-        // Send units on each castles I own
+    /**
+     * Expand by focusing a castle with several of ours.
+     *
+     * @param board
+     */
+    private void groupedExpansionStep(Board board) {
         List<Castle> otherCastles = board.getNeutralCastles();
         otherCastles.addAll(board.getOpponentsCastles());
         otherCastles.sort((a, b) -> new Double(new Force(b).getDefensiveForce())
@@ -298,6 +322,17 @@ public class WinterCapacitorStrategy implements BotStrategy {
                 break;
             }
         }
+    }
+
+    @Override
+    public List<Troop> createNewTroops(Board board) {
+        init(board);
+
+        // Basic one-to-one expansion
+        basicExpansionStep(board);
+
+        // Grouped expansion (ewoks)
+        groupedExpansionStep(board);
 
         return troopsToSendOnThisTurn;
     }
