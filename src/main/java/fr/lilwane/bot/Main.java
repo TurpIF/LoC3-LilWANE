@@ -43,14 +43,6 @@ public class Main implements Bot {
         // Send units on each castles I own
         List<Castle> myCastles = board.getMineCastles();
         for (Castle castle : myCastles) {
-            /*int maxUnitToSend = castle.getUnitCount() - 1; // Let at least one unit on this castle!
-            if (maxUnitToSend <= 1) {
-                // Nothing to send on this castle
-                continue;
-            }
-
-            // Compute random unit to send
-            int unitToSend = r.nextInt(maxUnitToSend) + 1;*/
 
             // Get all "enemy" castles (opponent or neutral)
             List<Castle> enemyCastles = board.getOpponentsCastles();
@@ -69,23 +61,17 @@ public class Main implements Bot {
 
             int nbSoldiers = castle.getUnitCount();
             for (Castle enemyCastle : enemyCastles) {
-                if (nbSoldiers <= 0) {
+                // Leave at least one soldier on the castle
+                if (nbSoldiers <= 1) {
                     break;
-                } else {
-                    // Finally create troop object
-                    int nbUnitsToSend = enemyCastle.getUnitCount() + 1;
-                    Troop troop = new Troop(enemyCastle, castle, nbUnitsToSend);
-                    nbSoldiers -= nbUnitsToSend;
-                    troopsToSendOnThisTurn.add(troop);
                 }
+
+                // Send the minumum amount of units (not all nbSoldiers though)
+                int nbUnitsToSend = Math.min(nbSoldiers - 1, enemyCastle.getUnitCount() + 1);
+                Troop troop = new Troop(enemyCastle, castle, nbUnitsToSend);
+                nbSoldiers -= nbUnitsToSend;
+                troopsToSendOnThisTurn.add(troop);
             }
-
-            /*int castleIndex = r.nextInt(enemyCastles.size());
-            Castle destination = enemyCastles.get(castleIndex);
-
-            // Finally create troop object
-            Troop troop = new Troop(destination, castle, unitToSend);
-            troopsToSendOnThisTurn.add(troop);*/
         }
 
         // Return all new troops
