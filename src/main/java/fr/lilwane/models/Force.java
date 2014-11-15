@@ -144,10 +144,35 @@ public class Force {
         return aggressiveUnitCount + defensiveUnitCount * 2 + simpleUnitCount;
     }
 
+    /**
+     * Remove a force from another, in place.
+     *
+     * @param force
+     */
     public void remove(Force force) {
         aggressiveUnitCount -= force.aggressiveUnitCount;
         defensiveUnitCount -= force.defensiveUnitCount;
         simpleUnitCount -= force.simpleUnitCount;
+    }
+
+    /**
+     * Remove a force from another, in place.
+     *
+     * @param amount
+     * @param aggressiveRatio
+     * @param defensiveRatio
+     * @param simpleRatio
+     */
+    public void remove(double amount, double aggressiveRatio, double defensiveRatio, double simpleRatio) {
+        remove(new Force((int) (amount * aggressiveRatio),
+                (int) (amount * defensiveRatio),
+                (int) (amount * simpleRatio)));
+    }
+
+    public Force minus(Force force) {
+        Force newForce = new Force(this);
+        newForce.remove(force);
+        return newForce;
     }
 
     public Force divide(double amount) {
