@@ -37,6 +37,12 @@ public class Force {
                 troop.getSimpleUnitCount());
     }
 
+    public Force(Force f) {
+        this(f.aggressiveUnitCount,
+                f.defensiveUnitCount,
+                f.simpleUnitCount);
+    }
+
     public static Force createAggressiveForce(Force force, int minimalForce, double aggressiveRatio, double defensiveRatio, double simpleRatio) {
         double totalRatios = aggressiveRatio + defensiveRatio + simpleRatio;
         aggressiveRatio /= totalRatios;
@@ -144,9 +150,11 @@ public class Force {
         simpleUnitCount -= force.simpleUnitCount;
     }
 
-    public void divide(double amount) {
-        aggressiveUnitCount /= amount;
-        defensiveUnitCount /= amount;
-        simpleUnitCount /= amount;
+    public Force divide(double amount) {
+        Force f = new Force(this);
+        f.aggressiveUnitCount /= amount;
+        f.defensiveUnitCount /= amount;
+        f.simpleUnitCount /= amount;
+        return f;
     }
 }

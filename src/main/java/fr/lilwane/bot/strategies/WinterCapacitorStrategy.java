@@ -194,7 +194,7 @@ public class WinterCapacitorStrategy implements BotStrategy {
 
             allCastles.sort((a, b) -> costCastle(castle, b).compareTo(costCastle(castle, a)));
 
-            Force force = castleForces.get(castle);
+            Force force = castleForces.get(castle).divide(EXPANSION_BUDGET);
             for (Castle enemyCastle : allCastles) {
                 // Leave at least one soldier on the castle
                 if (force.getTotalUnits() <= 1) {
